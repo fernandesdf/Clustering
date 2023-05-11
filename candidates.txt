@@ -1,0 +1,30 @@
+#Name and features:
+#Name; father's title; mother's; paternal grandfather's; paternal grandmother's; maternal grandfather's; maternal grandmother's
+#Candidates:
+Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
+Esmeraldinha Monteigo; arquiduque; tiktokStar; duque; duquesa; arquiduque; baronesa
+Armandinho de Alfama; youtubeInfluencer; tiktokStar; plebeu; plebeia; plebeu; plebeia
+Stephanie Grimaldi; príncipe; plebeia; príncipe; princesa; plebeu; plebeia
+Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
+Kate Liberato; plebeu; youtubeInfluencer; plebeu; plebeia; youtubeInfluencer; plebeia
+Adália Pavão; apresentadorFamaShow; apresentadoraFamaShow; plebeu; plebeia; plebeu; plebeia
+Tina Cruz; regente; tiktokStar; plebeu; apresentadoraFamaShow; plebeu; plebeia
+Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
+Ronelka Albarca; escudeiro; plebeia; escudeiro; escudeira; plebeu; plebeia
+Lisa Vasconcelos; rei; rainha; rei; rainha; arquiduque; arquiduquesa
+Ramón Vieira; rei; princesa; rei; arquiduquesa; rei; rainha
+Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
+Jon Rufino; rei; rainha; rei; rainha; rei; rainha
+Shakira Quintais; plebeu; youtubeInfluencer; youtubeInfluencer; tiktokStar; vencedorFestivalRTP; apresentadoraFamaShow
+Ygor Bencatel; youtubeInfluencer; princesa; plebeu; plebeia; rei; rainha
+Nildo Soverosa; imperador; tiktokStar; imperador; imperatriz; plebeu; plebeia
+Pettra Póvoa; príncipe; regente; rei; tiktokStar; barão; escudeira
+Manuela Poças; barão; princesa; visconde; plebeia; plebeu; plebeia
+Kevin Gouveia; príncipe; tiktokStar; rei; rainha; plebeu; plebeia
+#Exemplars:
+Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
+Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
+Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
+Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
+Armandinho de Alfama; youtubeInfluencer; tiktokStar; plebeu; plebeia; plebeu; plebeia
+Shakira Quintais; plebeu; youtubeInfluencer; youtubeInfluencer; tiktokStar; vencedorFestivalRTP; apresentadoraFamaShow
