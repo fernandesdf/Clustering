@@ -597,7 +597,7 @@ class Cluster(object):
 
 
 
-def kmeans(examples, k, verbose):
+def kmeans(examples, initialCentroids, k, verbose):
     """
     K-means clustering
     
@@ -611,7 +611,8 @@ def kmeans(examples, k, verbose):
     of k-means is printed
     """
     #Get k randomly chosen initial centroids, create cluster for each
-    initialCentroids = random.sample(examples, k)
+    #initialCentroids = random.sample(examples, k)
+    initialCentroids = initialCentroids
     
     clusters = []
     for e in initialCentroids:

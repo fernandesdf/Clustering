@@ -1,6 +1,9 @@
 from kMeansClustering import kmeans, trykmeans, Example, \
     dissimilarity, readCandidatesFile, writeFile, \
     translateToFeatureVector, readTitlesFile
+from CommandInputError import CommandInputError
+
+
 #import matplotlib.pyplot as plt
 
 # PASSOS
@@ -25,36 +28,11 @@ from kMeansClustering import kmeans, trykmeans, Example, \
 #    em vez de 1 centroid artificial ideial.
 # )
 
-class Candidate(Example):
-    def __init__(self, name, features, label=None): # e aqui tbm
-        # (passar os titles com os nomes em macho femea?)
-        super().__init__(name, features, label)
-        #adicionar campos necessarios
-        #titles = titles 
-
-#rita = Candidate("Rita", examplesList, titlesList)
-
-# ****** |1st Tests| ******
-
-# rita = Example("Rita", [8, 6, 9, 6, 5, 5])
-# julio = Example("Julio", [9, 10, 8, 8, 9, 4])
-# cesar = Example("Cesar", [7, 10, 0, 0, 0, 0])
-# paulo = Example("Paulo", [11, 0, 11, 11, 0, 0])
-
-
-# examplesList = [rita, julio, cesar, paulo]
-# k=2 # number of groups
-# #clusters = kmeans(examplesList, k, True)
-
-# t = 5 # number of tries
-# clustersTryKMeans = trykmeans(examplesList, k, t, True)
-# dissim = dissimilarity(clustersTryKMeans)
-
-# print(clustersTryKMeans[0])
-# print(clustersTryKMeans[1])
-# print(dissim)
 
 # ****** || ******
+
+
+
 
 
 ######### || ########
@@ -74,12 +52,6 @@ print()
 print("exemplars")
 print(exemplarsTitles)
 print()
-
-# com dic, tem o problema do titulo ter genero... 
-# como eh q vou distinguir..
-# dic = readTitlesFile('titles.txt')
-# print("dic scoresList")
-# print(dic)
 
 
 scoresList, titlesList = readTitlesFile('titles.txt')
@@ -111,9 +83,6 @@ print("Exemplars feature vector")
 print(exemfeatureVectors)
 
     
-## ITS WORKING UNTIL HERE ##
-
-
 # create candidates with the info above
 
 candidates = []
@@ -139,8 +108,18 @@ print("Exemplars")
 for exemplar in exemplars:
     print(exemplar.__str__())
 
-# ISTO N DEVE SER NECESSARIO, O PROF TBM N UTILIZOU
-ola = exemplars[1].getFeatures()
-print()
-print(ola)
-print(exemplars[0].__eq__(exemplars[0]))
+
+## ITS WORKING UNTIL HERE ##
+
+k=6
+fileName = "candidates.txt"
+try:
+    if len(exemplars) != k:
+        raise CommandInputError
+
+    clusters = kmeans(candidates, exemplars, k, True)
+    print(str(dissimilarity(clusters)))
+except CommandInputError:
+    print("Command input and input file error: number of initial \
+          centroids and k inconsistency between command line and  \
+          in file {}".format(fileName))
