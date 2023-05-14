@@ -1,0 +1,7 @@
+python clusteringRealities.py 6 titles.txt candidates.txt
+
+python3 clusteringRealities.py 6 titles.txt candidates.txt
+
+py clusteringRealities.py 6 titles.txt candidates.txt
+
+py3 clusteringRealities.py 6 titles.txt candidates.txt
