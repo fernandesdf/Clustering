@@ -1,6 +1,6 @@
-from kMeansClustering import kmeans, readTitlesFile, \
-    readCandidatesFile, translateToFeatureVector, \
-    Example, dissimilarity
+from kMeansClustering import kmeans, trykmeans, \
+    readTitlesFile, readCandidatesFile, \
+    translateToFeatureVector, Example, dissimilarity
 from CommandInputError import CommandInputError
 import sys
 
@@ -30,12 +30,13 @@ for titles in candidatesTitles:
                        titlesList, titles)
     candfeatureVectors.append(featureVector)
 
-# Exemplars feature vector
-exemfeatureVectors = []
-for titles in exemplarsTitles:
-    featureVector = translateToFeatureVector(scoresList, \
-                       titlesList, titles)
-    exemfeatureVectors.append(featureVector)
+if exemplarsName[0] != "void":
+    # Exemplars feature vector
+    exemfeatureVectors = []
+    for titles in exemplarsTitles:
+        featureVector = translateToFeatureVector(scoresList, \
+                        titlesList, titles)
+        exemfeatureVectors.append(featureVector)
 # END OF TRANSLATE FEATURES STRINGS TO SCORES
 
 
@@ -47,27 +48,34 @@ for i in range(len(candidatesNames)):
     candidates.append(candidate)
 # END OF CREATE CANDIDATES
 
-# CREATE EXEMPLARS
-exemplars = []
-for i in range(len(exemplarsName)):
-    exemplar = Example(exemplarsName[i], exemfeatureVectors[i])
-    exemplars.append(exemplar)
+if exemplarsName[0] != "void":
+    # CREATE EXEMPLARS
+    exemplars = []
+    for i in range(len(exemplarsName)):
+        exemplar = Example(exemplarsName[i], exemfeatureVectors[i])
+        exemplars.append(exemplar)
 # END OF CREATE EXEMPLARS
 
 
 ## STEP 3 ##
 # KMEANS (W/ INITIAL CENTROIDS)
-try:
-    if len(exemplars) != k:
-        raise CommandInputError
+print(exemplarsName[0] != "void")
+if exemplarsName[0] != "void":
+    try:
+        if len(exemplars) != k:
+            raise CommandInputError
+        
+        cluster = kmeans(candidates, k, True, exemplars)
+    except CommandInputError:
+        print("Command input and input file error: inconsistency " + \
+            "between k and number of initial centroids from " + \
+            "command line and file " + \
+            "{}, respectively".format(candidatesFileName))
+else:
+    cluster = trykmeans(candidates, k, 20, True)
 
-    clusters = kmeans(candidates, exemplars, k, True)
-    print(str(dissimilarity(clusters)))
-except CommandInputError:
-    print("Command input and input file error: inconsistency " + \
-          "between k and number of initial centroids from " + \
-          "command line and file " + \
-          "{}, respectively".format(candidatesFileName))
+print()
+print("Final cluster: " + str(dissimilarity(cluster)))
 # END OF KMEANS
 
 

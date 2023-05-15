@@ -38,6 +38,9 @@ def readCandidatesFile(fileName):
                     nameList.append(name)
                     featureList.append(feature)                   
                 else:
+                    if line == "void":
+                        exemplarsName.append(line)
+                        return nameList, featureList, exemplarsName, exemplars
                     feature = line.split('; ')
                     name = feature.pop(0)
                     exemplarsName.append(name)
@@ -138,7 +141,6 @@ def writeFile(fileName, content):
 ############## 24.2 Distance Metrics
 
 
-
 # Minkowski distance
 
 def minkowskiDist(v1, v2, p):
@@ -156,133 +158,6 @@ def minkowskiDist(v1, v2, p):
     for i in range(len(v1)):
         dist += abs(v1[i] - v2[i])**p
     return dist**(1.0/p)
-
-
-# Testing
-
-##cascavel = [1,1,1,1,0]
-##jiboia = [0,1,0,1,0]
-##print("Euclidean distance:", minkowskiDist(cascavel, jiboia, 2))
-##print("Manhattan distance:", minkowskiDist(cascavel, jiboia, 1), "\n")
-
-
-
-# First case study with animals 
-
-class Animal(object):
-    """
-    Animal
-    """
-
-    
-    def __init__(self, name, features):
-        """
-        Constructor
-    
-        Requires:
-        name a string representing the name of the animal;
-        features a list of numbers representing its feature vector
-        Ensures:
-        object of type Animal created
-        """
-        self._name = name
-        self._features = features
-
-
-    def getName(self):
-        """
-        Name of the animal
-
-        Ensures:
-        name of animal
-        """
-        return self._name
-
-
-    def getFeatures(self):
-        """
-        Feature vector of the animal
-
-        Ensures:
-        list representing the feature vector of the animal
-        """
-        return self._features
-
-
-    def distance(self, other):
-        """
-        Euclidean distance with respect to a given animal
-
-        Requires:
-        other is an animal
-        Ensures:
-        the Euclidean distance between feature vectors of self and other
-        """
-        return minkowskiDist(self.getFeatures(), other.getFeatures(), 2)
-
-
-##    def __str__(self): #to be implemented
-##            pass
-##        
-##    def __eq__(self): #to be implemented
-##            pass
-##
-##    def __lt__(self): #to be implemented
-##            pass
-
-
-
-def compareAnimals(animals, precision):
-    """
-    Compares animals
-
-    Requires:
-    animals a list of animals;
-    precision int >= 0 representing comparison precision.
-    Ensures:
-    Save to file table with Euclidean distance between
-    the feature vectors of each animal in animals
-    """
-    #Get labels from columns and rows
-    columnLabels = []
-    for a in animals:
-        columnLabels.append(a.getName())
-    rowLabels = columnLabels[:]
-    tableVals = []
-    #Get distance between pairs of animals
-    #For each row
-    for a1 in animals:
-        row = []
-        #For each column
-        for a2 in animals:
-            distance = a1.distance(a2)
-            row.append(str(round(distance, precision)))
-        tableVals.append(row)
-    #Produce table
-    # table = plt.table(rowLabels = rowLabels,
-    #                     colLabels = columnLabels,
-    #                     cellText = tableVals,
-    #                     cellLoc = "center",
-    #                     loc = "center",
-    #                     colWidths = [0.2]*len(animals))
-    # plt.axis("off")
-    # table.scale(1, 2.5)
-    # plt.savefig("distances")
-    # plt.show()
-
-
-##cascavel = Animal('cascavel', [1,1,1,1,0,1])
-##jiboia = Animal('jiboia', [0,1,0,1,0,1])
-##crocodilo = Animal('crocodilo', [1,1,0,1,4,1])
-##ra = Animal('ra do dardo', [1,0,1,0,4,1])
-##salmao = Animal('salmao', [1,1,0,1,0,0])
-##animals = [cascavel, jiboia, crocodilo, ra, salmao]
-##compareAnimals(animals, 3)
-
-
-
-############## 25.1 Types Example and Cluster
-
 
 
 class Example(object):
@@ -430,8 +305,7 @@ class Example(object):
 ##
 ##
 ##    def __lt__(self): #to be implemented
-##            pass
-        
+##            pass   
 
 
 class Cluster(object):
@@ -571,33 +445,7 @@ class Cluster(object):
 ##            pass
 
 
-
-
-##cascavel = Example('cascavel', [1,1,1,1,0,1])
-##jiboia = Example('jiboia', [0,1,0,1,0,1])
-##crocodilo = Example('crocodilo', [1,1,0,1,4,1])
-##ra = Example('ra do dardo', [1,0,1,0,4,1])
-##salmao = Example('salmao', [1,1,0,1,0,0])
-##
-##examples = [cascavel, jiboia, crocodilo, ra, salmao]
-##animals = Cluster(examples)
-##
-##print(animals.getCentroid())
-##print()
-##
-##print(animals.variability())
-##print()
-##
-##print(animals)
-##print()
-
-
-
-############## 25.2 K-means Clustering
-
-
-
-def kmeans(examples, initialCentroids, k, verbose):
+def kmeans(examples, k, verbose, centroids=None):
     """
     K-means clustering
     
@@ -611,8 +459,10 @@ def kmeans(examples, initialCentroids, k, verbose):
     of k-means is printed
     """
     #Get k randomly chosen initial centroids, create cluster for each
-    #initialCentroids = random.sample(examples, k)
-    initialCentroids = initialCentroids
+    if centroids == None:
+        initialCentroids = random.sample(examples, k)
+    else:
+        initialCentroids = centroids
     
     clusters = []
     for e in initialCentroids:
@@ -715,7 +565,7 @@ def trykmeans(examples, numClusters, numTrials,
     for trial in range(1, numTrials):
         clusters = kmeans(examples, numClusters, verbose)
         currDissimilarity = dissimilarity(clusters)
-        print("cluster" + str((trial+1)) + " " + str(currDissimilarity))
+        print("cluster" + str((trial+1)) + " " + str(currDissimilarity) + "\n")
         if currDissimilarity < minDissimilarity:
             best = clusters
             minDissimilarity = currDissimilarity
