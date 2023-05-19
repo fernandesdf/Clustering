@@ -1,6 +1,7 @@
 from kMeansClustering import kmeans, trykmeans, Example, \
     dissimilarity, readCandidatesFile, writeFile, \
-    translateToFeatureVector, readTitlesFile
+    translateToFeatureVector, readTitlesFile, \
+    getRealCentroid, processOutputString, writeFile
 from CommandInputError import CommandInputError
 
 
@@ -117,9 +118,23 @@ try:
     if len(exemplars) != k:
         raise CommandInputError
 
-    clusters = kmeans(candidates, exemplars, k, True)
+    clusters = kmeans(candidates, k, True, exemplars)
     print(str(dissimilarity(clusters)))
 except CommandInputError:
     print("Command input and input file error: number of initial \
           centroids and k inconsistency between command line and  \
           in file {}".format(fileName))
+    
+clusters = trykmeans(candidates, k, 6, True)
+
+
+print()
+
+for cluster in clusters:
+    print("antes")
+    print(cluster.getCentroid())
+
+    cluster.updateCentroid(getRealCentroid(cluster))
+
+    print("depois")
+    print(cluster.getCentroid())

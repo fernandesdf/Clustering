@@ -23,16 +23,19 @@ def readCandidatesFile(fileName):
     '''
     nameList = []
     featureList = [] #List of list of strs
+    featureStrList = []
     endOfCandidates = False
     exemplarsName = []
     exemplars = []
-    # try:
+    exemplarsFeatureStr = []
+    
     with open(fileName, encoding='utf-8') as myFile:
         for line in myFile:
             line = line.strip('\n')
 
             if not line.startswith('#'):
                 if not endOfCandidates:
+                    featureStrList.append(line)
                     feature = line.split('; ')
                     name = feature.pop(0)
                     nameList.append(name)
@@ -40,7 +43,10 @@ def readCandidatesFile(fileName):
                 else:
                     if line == "void":
                         exemplarsName.append(line)
-                        return nameList, featureList, exemplarsName, exemplars
+                        return nameList, featureList, featureStrList, \
+                        exemplarsName, exemplars, exemplarsFeatureStr
+                        
+                    exemplarsFeatureStr.append(line)
                     feature = line.split('; ')
                     name = feature.pop(0)
                     exemplarsName.append(name)
@@ -49,7 +55,8 @@ def readCandidatesFile(fileName):
             if line == "#Exemplars:":
                 endOfCandidates = True
 
-    return nameList, featureList, exemplarsName, exemplars
+    return nameList, featureList, featureStrList, \
+        exemplarsName, exemplars, exemplarsFeatureStr
 
     # except FileNotFoundError:
     #     print("FileNotFoundError: No such file or" + \
@@ -74,7 +81,7 @@ def readTitlesFile(fileName):
                 line = line.strip('\n')
                 titles = line.split('; ')
                 score = titles.pop(0)
-                scoreList.append(int(score))
+                scoreList.append(float(score))
                 titlesList.append(titles)
                 ## com dic
                 #dic[titles[0]] = score
@@ -126,6 +133,46 @@ def translateToFeatureVector(scores, titles, featureList):
 
 # END OF TRANSLATE CONTENT TO FEATURE VECTOR
 
+# GET THE REAL CENTROID IN A CLUSTER
+def getRealCentroid(cluster):
+    '''
+    Gets the real centroid in a cluster.
+    
+    Requires: cluster is Cluster.
+    Ensures: centroid, a centroid which belongs to the 
+    candidates of this cluster.
+    '''
+    artificial = cluster.getCentroid()
+    candidates = cluster.getExamples()
+    distances = []
+    best = ""
+    j = 0
+
+
+    for candidate in candidates:
+        #print("#Feature vectors do cluster")
+        #print(candidate.getFeatures())
+        #print("#")
+        distance = artificial.distance(candidate)
+        distances.append(distance)
+
+    for i in range(len(distances)):
+        if i == 0:
+            best = distances[0]
+
+        if best > distances[i]:
+            best = distances[i]
+            j = i
+
+    
+    #print(best)
+    #print("j: "+str(candidates[j]))
+    newCentroid = Example(candidates[j].getName(), \
+                          candidates[j].getFeatures(), \
+                          candidates[j].getLabel())
+    return newCentroid
+# END OF GET THE REAL CENTROID IN A CLUSTER
+
 # WRITE FILE
 def writeFile(fileName, content):
     '''
@@ -137,6 +184,29 @@ def writeFile(fileName, content):
     '''
     with open(fileName, 'w') as f: # talvez por aqui tbm encoding="utf-8"
         f.write(content)
+
+def processOutputString(clusters, k):
+    '''
+    Processes the clusters information to be written.
+    '''
+    finalStr = ''
+    i = 1
+
+    for cluster in clusters:
+        if i != 1:
+            finalStr += '\n'
+        finalStr += "#exemplar " + str(i)
+        finalStr += ":\n" + cluster.getCentroid().getLabel() \
+        + "\n#cluster " + str(i)
+        
+        for candidate in cluster.getExamples():
+            finalStr += "\n" + candidate.getLabel()
+
+        if i != k:
+            finalStr += "\n"
+
+        i += 1
+    return finalStr
 
 ############## 24.2 Distance Metrics
 
@@ -272,32 +342,32 @@ class Example(object):
         """
         return self._name + ':' + str(self._features) + ':' + str(self._label)
 
-    def __eq__(self, otherObj): # Do I need really this? The original Example and kmeans does need this...
-        '''
-        Verifies if self is equal to another Example
+    # def __eq__(self, otherObj): # Do I need really this? The original Example and kmeans does need this...
+    #     '''
+    #     Verifies if self is equal to another Example
 
-        Requires: otherObj is Example object
+    #     Requires: otherObj is Example object
         
-        Ensures: bool 
-        True is both Example objects have equal: name and feature.
-        False otherwise.
-        '''
+    #     Ensures: bool 
+    #     True is both Example objects have equal: name and feature.
+    #     False otherwise.
+    #     '''
         
-        if self.getName() != otherObj.getName():
-            return False
+    #     if self.getName() != otherObj.getName():
+    #         return False
 
-        if len(self.getFeatures()) != len(otherObj.getFeatures()):
-            return False
+    #     if len(self.getFeatures()) != len(otherObj.getFeatures()):
+    #         return False
         
-        # Not tested
-        i = 0
-        for feature in self.getFeatures():
-            featuresOtherObj = otherObj.getFeatures()
-            if feature != featuresOtherObj[i]:
-                return False
-            i += 1
+    #     # Not tested
+    #     i = 0
+    #     for feature in self.getFeatures():
+    #         featuresOtherObj = otherObj.getFeatures()
+    #         if feature != featuresOtherObj[i]:
+    #             return False
+    #         i += 1
 
-        return True
+    #     return True
 
 
 ##    def __eq__(self): #to be implemented
@@ -345,6 +415,16 @@ class Cluster(object):
             return oldCentroid.distance(self._centroid)
         else:
             return 0.0
+        
+    def updateCentroid(self, newCentroid):
+        '''
+        Update the cluster's centroid.
+        
+        Requires: newCentroid is Example
+
+        Ensures: self.getCentroid() == newCentroid
+        '''
+        self._centroid = newCentroid
 
 
     def computeCentroid(self):
@@ -459,6 +539,7 @@ def kmeans(examples, k, verbose, centroids=None):
     of k-means is printed
     """
     #Get k randomly chosen initial centroids, create cluster for each
+    print(centroids==None)
     if centroids == None:
         initialCentroids = random.sample(examples, k)
     else:

@@ -1,6 +1,7 @@
 from kMeansClustering import kmeans, trykmeans, \
     readTitlesFile, readCandidatesFile, \
-    translateToFeatureVector, Example, dissimilarity
+    translateToFeatureVector, Example, dissimilarity, \
+    getRealCentroid, processOutputString, writeFile
 from CommandInputError import CommandInputError
 import sys
 
@@ -17,8 +18,8 @@ candidatesFileName = sys.argv[3]
 # READ FILES
 scoresList, titlesList = readTitlesFile(titlesFileName)
 
-candidatesNames, candidatesTitles, \
-exemplarsName, exemplarsTitles \
+candidatesNames, candidatesTitles, candidatesFeatureStr, \
+exemplarsName, exemplarsTitles, exemplarsFeatureStr \
     = readCandidatesFile(candidatesFileName)
 # END OF READ FILES
 
@@ -41,51 +42,69 @@ if exemplarsName[0] != "void":
 
 
 ## STEP 2 ##
+
 # CREATE CANDIDATES
 candidates = []
-for i in range(len(candidatesNames)): 
-    candidate = Example(candidatesNames[i], candfeatureVectors[i])
+
+for i in range(len(candidatesNames)):
+
+    candidate = Example(candidatesNames[i], \
+                        candfeatureVectors[i],\
+                        candidatesFeatureStr[i])
     candidates.append(candidate)
 # END OF CREATE CANDIDATES
 
+# CREATE EXEMPLARS
 if exemplarsName[0] != "void":
-    # CREATE EXEMPLARS
+    
     exemplars = []
     for i in range(len(exemplarsName)):
-        exemplar = Example(exemplarsName[i], exemfeatureVectors[i])
+        exemplar = Example(exemplarsName[i], \
+                           exemfeatureVectors[i], \
+                           exemplarsFeatureStr[i])
         exemplars.append(exemplar)
 # END OF CREATE EXEMPLARS
 
 
 ## STEP 3 ##
-# KMEANS (W/ INITIAL CENTROIDS)
-print(exemplarsName[0] != "void")
 if exemplarsName[0] != "void":
+    # KMEANS (W/ INITIAL CENTROIDS)
     try:
         if len(exemplars) != k:
             raise CommandInputError
         
-        cluster = kmeans(candidates, k, True, exemplars)
+        clusters = kmeans(candidates, k, True, exemplars)
     except CommandInputError:
         print("Command input and input file error: inconsistency " + \
             "between k and number of initial centroids from " + \
             "command line and file " + \
             "{}, respectively".format(candidatesFileName))
+    # END OF KMEANS
 else:
-    cluster = trykmeans(candidates, k, 20, True)
+    # TRYKMEANS (WITHOUT INITIAL CENTROIDS)
+    clusters = trykmeans(candidates, k, 20, True)
+    # END OF TRYKMEANS (WITHOUT INITIAL CENTROIDS)
 
 print()
-print("Final cluster: " + str(dissimilarity(cluster)))
-# END OF KMEANS
+print("Final cluster: " + str(dissimilarity(clusters)))
+
 
 
 ## STEP 4 ##
-# FIND CLUSTERS REAL CENTROIDSP
-
+# FIND CLUSTERS REAL CENTROIDS
+for cluster in clusters:
+    cluster.updateCentroid(getRealCentroid(cluster))
+    for example in cluster.getExamples():
+        #print(example.getLabel())
+        pass
 # END OF FIND CLUSTERS REAL CENTROIDS
 
 
 ## STEP 5 ##
-# WRITE OUTPUT FILE
+# PROCESS STRING TO FILE
+outputStr = processOutputString(clusters, k)
+# END OF PROCESS STRING TO FILE
 
+# WRITE OUTPUT FILE
+writeFile('outputFile.txt', outputStr)
 # END OF WRITE OUTPUT FILE
