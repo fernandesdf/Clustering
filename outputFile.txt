@@ -1,43 +1,31 @@
 #exemplar 1:
-Adália Pavão; apresentadorFamaShow; apresentadoraFamaShow; plebeu; plebeia; plebeu; plebeia
+Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
 #cluster 1
-Kate Liberato; plebeu; youtubeInfluencer; plebeu; plebeia; youtubeInfluencer; plebeia
-Adália Pavão; apresentadorFamaShow; apresentadoraFamaShow; plebeu; plebeia; plebeu; plebeia
-Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
-Ronelka Albarca; escudeiro; plebeia; escudeiro; escudeira; plebeu; plebeia
-
-#exemplar 2:
-Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
-#cluster 2
-Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
 Lisa Vasconcelos; rei; rainha; rei; rainha; arquiduque; arquiduquesa
 Ramón Vieira; rei; princesa; rei; arquiduquesa; rei; rainha
 Jon Rufino; rei; rainha; rei; rainha; rei; rainha
 
+#exemplar 2:
+Esmeraldinha Monteigo; arquiduque; tiktokStar; duque; duquesa; arquiduque; baronesa
+#cluster 2
+Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
+Tina Cruz; regente; tiktokStar; plebeu; apresentadoraFamaShow; plebeu; plebeia
+Ronelka Albarca; rei; rainha; escudeiro; escudeira; tiktokStar; youtubeInfluencer
+Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
+Ygor Bencatel; youtubeInfluencer; princesa; plebeu; plebeia; rei; rainha
+
 #exemplar 3:
-Armandinho de Alfama; youtubeInfluencer; tiktokStar; plebeu; plebeia; plebeu; plebeia
+Adália Pavão; apresentadorFamaShow; apresentadoraFamaShow; plebeu; plebeia; plebeu; plebeia
 #cluster 3
 Armandinho de Alfama; youtubeInfluencer; tiktokStar; plebeu; plebeia; plebeu; plebeia
-Tina Cruz; regente; tiktokStar; plebeu; apresentadoraFamaShow; plebeu; plebeia
+Kate Liberato; plebeu; youtubeInfluencer; plebeu; plebeia; youtubeInfluencer; plebeia
+Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
 Manuela Poças; barão; princesa; visconde; plebeia; plebeu; plebeia
 
 #exemplar 4:
-Ygor Bencatel; youtubeInfluencer; princesa; plebeu; plebeia; rei; rainha
-#cluster 4
-Ygor Bencatel; youtubeInfluencer; princesa; plebeu; plebeia; rei; rainha
-
-#exemplar 5:
 Kevin Gouveia; príncipe; tiktokStar; rei; rainha; plebeu; plebeia
-#cluster 5
+#cluster 4
 Stephanie Grimaldi; príncipe; plebeia; príncipe; princesa; plebeu; plebeia
+Shakira Quintais; plebeu; youtubeInfluencer; youtubeInfluencer; tiktokStar; vencedorFestivalRTP; apresentadoraFamaShow
 Nildo Soverosa; imperador; tiktokStar; imperador; imperatriz; plebeu; plebeia
 Pettra Póvoa; príncipe; regente; rei; tiktokStar; barão; escudeira
-Kevin Gouveia; príncipe; tiktokStar; rei; rainha; plebeu; plebeia
-
-#exemplar 6:
-Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
-#cluster 6
-Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
-Esmeraldinha Monteigo; arquiduque; tiktokStar; duque; duquesa; arquiduque; baronesa
-Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
-Shakira Quintais; plebeu; youtubeInfluencer; youtubeInfluencer; tiktokStar; vencedorFestivalRTP; apresentadoraFamaShow

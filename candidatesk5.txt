@@ -10,7 +10,7 @@ Kate Liberato; plebeu; youtubeInfluencer; plebeu; plebeia; youtubeInfluencer; pl
 Adália Pavão; apresentadorFamaShow; apresentadoraFamaShow; plebeu; plebeia; plebeu; plebeia
 Tina Cruz; regente; tiktokStar; plebeu; apresentadoraFamaShow; plebeu; plebeia
 Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
-Ronelka Albarca; escudeiro; plebeia; escudeiro; escudeira; plebeu; plebeia
+Ronelka Albarca; rei; rainha; escudeiro; escudeira; tiktokStar; youtubeInfluencer
 Lisa Vasconcelos; rei; rainha; rei; rainha; arquiduque; arquiduquesa
 Ramón Vieira; rei; princesa; rei; arquiduquesa; rei; rainha
 Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
@@ -22,4 +22,8 @@ Pettra Póvoa; príncipe; regente; rei; tiktokStar; barão; escudeira
 Manuela Poças; barão; princesa; visconde; plebeia; plebeu; plebeia
 Kevin Gouveia; príncipe; tiktokStar; rei; rainha; plebeu; plebeia
 #Exemplars:
-void
+Alda Barroso; imperador; imperatriz; imperador; princesa; príncipe; princesa
+Mirela Laranja; conde; viscondessa; duque; baronesa; visconde; baronesa
+Cristiano Ronaldo; plebeu; plebeia; plebeu; plebeia; plebeu; plebeia
+Francisquinha Capuleto; duque; condessa; arquiduque; condessa; visconde; viscondessa
+Armandinho de Alfama; youtubeInfluencer; tiktokStar; plebeu; plebeia; plebeu; plebeia

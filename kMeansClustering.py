@@ -1,9 +1,13 @@
-
+# 2022-2023 Programacao 2 LTI
+# Grupo 031
+# 53481 Diogo Alexandre Fernandes Valente
+# 54967 Diogo Miguel dos Santos Fernandes
 
 #import matplotlib.pyplot as plt
 import math
 import random
 import sys
+from copy import deepcopy
 
 
 # READ FILE
@@ -58,10 +62,6 @@ def readCandidatesFile(fileName):
     return nameList, featureList, featureStrList, \
         exemplarsName, exemplars, exemplarsFeatureStr
 
-    # except FileNotFoundError:
-    #     print("FileNotFoundError: No such file or" + \
-    #         " directory: {}".format(fileName))
-    #     sys.exit(1)
 
 def readTitlesFile(fileName):
     '''
@@ -150,9 +150,6 @@ def getRealCentroid(cluster):
 
 
     for candidate in candidates:
-        #print("#Feature vectors do cluster")
-        #print(candidate.getFeatures())
-        #print("#")
         distance = artificial.distance(candidate)
         distances.append(distance)
 
@@ -164,9 +161,6 @@ def getRealCentroid(cluster):
             best = distances[i]
             j = i
 
-    
-    #print(best)
-    #print("j: "+str(candidates[j]))
     newCentroid = Example(candidates[j].getName(), \
                           candidates[j].getFeatures(), \
                           candidates[j].getLabel())
@@ -200,7 +194,9 @@ def processOutputString(clusters, k):
         + "\n#cluster " + str(i)
         
         for candidate in cluster.getExamples():
-            finalStr += "\n" + candidate.getLabel()
+            # Don't print candidate which is a centroid
+            if not candidate.__eq__(cluster.getCentroid()):
+                finalStr += "\n" + candidate.getLabel()
 
         if i != k:
             finalStr += "\n"
@@ -342,38 +338,34 @@ class Example(object):
         """
         return self._name + ':' + str(self._features) + ':' + str(self._label)
 
-    # def __eq__(self, otherObj): # Do I need really this? The original Example and kmeans does need this...
-    #     '''
-    #     Verifies if self is equal to another Example
+    def __eq__(self, otherObj):
+        '''
+        Verifies if self is equal to another Example
 
-    #     Requires: otherObj is Example object
+        Requires: otherObj is Example object
         
-    #     Ensures: bool 
-    #     True is both Example objects have equal: name and feature.
-    #     False otherwise.
-    #     '''
+        Ensures: bool 
+        True is both Example objects have equal: name and feature.
+        False otherwise.
+        '''
         
-    #     if self.getName() != otherObj.getName():
-    #         return False
+        if self.getName() != otherObj.getName():
+            return False
 
-    #     if len(self.getFeatures()) != len(otherObj.getFeatures()):
-    #         return False
         
-    #     # Not tested
-    #     i = 0
-    #     for feature in self.getFeatures():
-    #         featuresOtherObj = otherObj.getFeatures()
-    #         if feature != featuresOtherObj[i]:
-    #             return False
-    #         i += 1
+        if len(self.getFeatures()) != len(otherObj.getFeatures()):
+            return False
+        
+        i = 0
+        for feature in self.getFeatures():
+            featuresOtherObj = otherObj.getFeatures()
+            if feature != featuresOtherObj[i]:
+                return False
+            i += 1
+    
+        return True
 
-    #     return True
 
-
-##    def __eq__(self): #to be implemented
-##            pass
-##
-##
 ##    def __lt__(self): #to be implemented
 ##            pass   
 
@@ -383,7 +375,7 @@ class Cluster(object):
     Cluster of examples
     """
     
-    def __init__(self, examples):
+    def __init__(self, examples, centroid=None):
         """
         Constructor
 
@@ -395,7 +387,10 @@ class Cluster(object):
         object of type Cluster is created
         """
         self._examples = examples
-        self._centroid = self.computeCentroid()
+        if centroid:
+            self._centroid = examples[0]
+        else:
+            self._centroid = self.computeCentroid()
 
 
     def update(self, examples):
@@ -444,7 +439,7 @@ class Cluster(object):
             totValsAveraged.append(totVals[i]/float(len(self._examples)))
         centroid = Example('centroid', totValsAveraged)
         return centroid
-    
+
 
     def getExamples(self):
         """
@@ -539,15 +534,18 @@ def kmeans(examples, k, verbose, centroids=None):
     of k-means is printed
     """
     #Get k randomly chosen initial centroids, create cluster for each
-    print(centroids==None)
     if centroids == None:
         initialCentroids = random.sample(examples, k)
+
+        clusters = []
+        for e in initialCentroids:
+            clusters.append(Cluster([e]))
     else:
         initialCentroids = centroids
-    
-    clusters = []
-    for e in initialCentroids:
-        clusters.append(Cluster([e]))
+
+        clusters = []
+        for e in initialCentroids:
+            clusters.append(Cluster([e], True))
 
     #Iterate until centroids do not change
     converged = False
@@ -593,21 +591,6 @@ def kmeans(examples, k, verbose, centroids=None):
             print('') #add blank line
             
     return clusters
-
-#Feature vector: egg-laying; scales; posionous; cold-blooded; #legs; reptile
-##cascavel = Example('cascavel', [1,1,1,1,0,1])
-##jiboia = Example('jiboia', [0,1,0,1,0,1])
-##crocodilo = Example('crocodilo', [1,1,0,1,4,1])
-##ra = Example('ra do dardo', [1,0,1,0,4,1])
-##salmao = Example('salmao', [1,1,0,1,0,0])
-##lagarto = Example('lagarto', [1,0,0,1,4,1])
-##carapau = Example('carapau', [1,0,0,0,1,0])
-##leopardo = Example('leopardo', [0,0,0,0,0,0])
-##
-##examples = [cascavel, jiboia, crocodilo, ra, salmao, lagarto, carapau, leopardo]
-##
-##kmeans(examples, 3, True)
-
 
 
 def dissimilarity(clusters):

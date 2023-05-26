@@ -1,3 +1,8 @@
+# 2022-2023 Programacao 2 LTI
+# Grupo 031
+# 53481 Diogo Alexandre Fernandes Valente
+# 54967 Diogo Miguel dos Santos Fernandes
+
 from kMeansClustering import kmeans, trykmeans, \
     readTitlesFile, readCandidatesFile, \
     translateToFeatureVector, Example, dissimilarity, \
@@ -79,6 +84,7 @@ if exemplarsName[0] != "void":
             "between k and number of initial centroids from " + \
             "command line and file " + \
             "{}, respectively".format(candidatesFileName))
+        sys.exit()
     # END OF KMEANS
 else:
     # TRYKMEANS (WITHOUT INITIAL CENTROIDS)
@@ -94,9 +100,6 @@ print("Final cluster: " + str(dissimilarity(clusters)))
 # FIND CLUSTERS REAL CENTROIDS
 for cluster in clusters:
     cluster.updateCentroid(getRealCentroid(cluster))
-    for example in cluster.getExamples():
-        #print(example.getLabel())
-        pass
 # END OF FIND CLUSTERS REAL CENTROIDS
 
 
